@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import commentRoutes from "./routes/comments.js";
 
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";  // ✅ ADD THIS
@@ -20,6 +21,7 @@ app.use(cors({
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);  // ✅ ADD THIS
+app.use("/api/comments", commentRoutes);
 
 // Test route
 app.get("/", (req, res) => {
