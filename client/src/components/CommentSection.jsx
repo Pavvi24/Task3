@@ -254,21 +254,18 @@ Comments
                 className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 resize-none transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm"
               />
               <div className="flex items-center justify-between">
-                <span className="font-sans text-xs text-ink-400">{newComment.lengthThe only tiny thing I'd optionally polish
+  <span className="font-sans text-xs text-ink-400">
+    {newComment.length}/1000
+  </span>
 
-Your main comment avatar is still:
-
-className="w-8 h-8 rounded-full border border-ink-200 flex-shrink-0 mt-1"
-
-while the user avatar for the comment form is:
-
-className="w-11 h-11 rounded-full border-2 border-blue-300 shadow-md flex-shrink-0"
-
-That's not an error—just a design choice. If you like the current size, leave it. }/1000</span>
-                <button type="submit" disabled={submitting || !newComment.trim()} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                  {submitting ? 'Posting...' : 'Post Comment'}
-                </button>
-              </div>
+  <button
+    type="submit"
+    disabled={submitting || !newComment.trim()}
+    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    {submitting ? "Posting..." : "Post Comment"}
+  </button>
+</div>
             </div>
           </div>
         </form>
