@@ -39,7 +39,7 @@ function CommentItem({ comment, onDelete, postId, onReply }) {
           className="w-8 h-8 rounded-full border border-ink-200 flex-shrink-0 mt-1"
         />
         <div className="flex-1">
-          <div className="bg-paper-200 px-4 py-3">
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-md px-5 py-4 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center gap-2 mb-1">
               <span className="font-sans text-sm font-medium text-ink-900">{comment.author?.name}</span>
               <span className="text-ink-200">·</span>
@@ -77,11 +77,15 @@ function CommentItem({ comment, onDelete, postId, onReply }) {
                 className="input text-sm flex-1"
                 maxLength={500}
               />
-              <button type="submit" disabled={submitting} className="btn-primary text-xs px-4">
-                {submitting ? '...' : 'Reply'}
-              </button>
-            </form>
-          )}
+             <button
+      type="submit"
+      disabled={submitting || !replyText.trim()}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {submitting ? "Posting..." : "Reply"}
+    </button>
+  </form>
+)}
 
           {/* Replies */}
           {comment.replies?.length > 0 && (
@@ -91,10 +95,10 @@ function CommentItem({ comment, onDelete, postId, onReply }) {
                   <img
                     src={reply.author?.avatar}
                     alt={reply.author?.name}
-                    className="w-6 h-6 rounded-full border border-ink-200 flex-shrink-0 mt-1"
+                    className="w-8 h-8 rounded-full border-2 border-blue-300 shadow-sm flex-shrink-0 mt-1"
                   />
                   <div className="flex-1">
-                    <div className="bg-paper-100 border border-ink-100 px-3 py-2">
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 shadow-sm">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-sans text-xs font-medium text-ink-900">{reply.author?.name}</span>
                         <span className="text-ink-200">·</span>
@@ -190,10 +194,46 @@ export default function CommentSection({ postId }) {
   };
 
   return (
-    <section className="mt-12 pt-10 border-t border-ink-100">
-      <h2 className="font-display text-2xl font-bold text-ink-900 mb-6">
-        Discussion <span className="text-ink-300 font-normal">({comments.length})</span>
-      </h2>
+   <section className="mt-12 pt-10 border-t border-ink-100">
+
+<div className="flex items-center justify-between mb-8">
+
+<div>
+<h2 className="font-display text-3xl font-bold text-ink-900 flex items-center gap-3">
+
+<span className="text-3xl">💬</span>
+
+Discussion
+
+</h2>
+
+<p className="text-sm text-ink-400 mt-1">
+
+{comments.length === 0
+? "Be the first to join the discussion."
+: `${comments.length} ${comments.length === 1 ? "comment" : "comments"} posted`}
+
+</p>
+
+</div>
+
+<div className="bg-paper-200 rounded-full px-5 py-2 border border-ink-100 shadow-sm">
+
+<span className="font-semibold text-accent">
+
+{comments.length}
+
+</span>
+
+<span className="text-ink-400 ml-2">
+
+Comments
+
+</span>
+
+</div>
+
+</div>
 
       {/* Comment Form */}
       {user ? (
@@ -202,7 +242,7 @@ export default function CommentSection({ postId }) {
             <img
               src={user.avatar}
               alt={user.name}
-              className="w-9 h-9 rounded-full border border-ink-200 flex-shrink-0"
+              className="w-11 h-11 rounded-full border-2 border-blue-300 shadow-md flex-shrink-0"
             />
             <div className="flex-1">
               <textarea
@@ -211,11 +251,11 @@ export default function CommentSection({ postId }) {
                 placeholder="Share your thoughts..."
                 rows={3}
                 maxLength={1000}
-                className="input resize-none mb-2"
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 resize-none transition-all duration-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 shadow-sm"
               />
               <div className="flex items-center justify-between">
                 <span className="font-sans text-xs text-ink-400">{newComment.length}/1000</span>
-                <button type="submit" disabled={submitting || !newComment.trim()} className="btn-primary text-xs">
+                <button type="submit" disabled={submitting || !newComment.trim()} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                   {submitting ? 'Posting...' : 'Post Comment'}
                 </button>
               </div>
@@ -227,7 +267,9 @@ export default function CommentSection({ postId }) {
           <p className="font-body text-sm text-ink-600 mb-3">Join the conversation</p>
           <div className="flex gap-3 justify-center">
             <Link to="/login" className="btn-secondary text-xs">Sign In</Link>
-            <Link to="/register" className="btn-primary text-xs">Create Account</Link>
+            <Link to="/register" className="btn-primary text-xs">
+  Create Account
+</Link>
           </div>
         </div>
       )}
@@ -235,13 +277,40 @@ export default function CommentSection({ postId }) {
       {/* Comments List */}
       {loading ? (
         <div className="text-center py-8">
-          <div className="inline-block w-6 h-6 border-2 border-ink-200 border-t-accent rounded-full animate-spin" />
+          <div className="flex flex-col items-center gap-4">
+
+<div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"/>
+
+<p className="text-gray-500">
+
+Loading comments...
+
+</p>
+
+</div>
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-10 text-ink-400">
-          <p className="font-body text-lg mb-1">No comments yet</p>
-          <p className="font-sans text-sm">Be the first to share your thoughts.</p>
-        </div>
+       <div className="text-center py-16">
+
+<div className="text-6xl mb-5">
+
+💬
+
+</div>
+
+<h3 className="text-2xl font-bold text-ink-700">
+
+No comments yet
+
+</h3>
+
+<p className="mt-2 text-ink-400">
+
+Start the discussion by posting the first comment.
+
+</p>
+
+</div>
       ) : (
         <div className="space-y-6">
           {comments.map((comment) => (
