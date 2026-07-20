@@ -1,3 +1,4 @@
+import PostCard from "../components/PostCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -49,20 +50,9 @@ const Home = () => {
       {posts.length === 0 ? (
         <p>No posts available</p>
       ) : (
-        posts.map((post) => (
-          <div
-            key={post._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px",
-              borderRadius: "8px",
-            }}
-          >
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-          </div>
-        ))
+       posts.map((post) => (
+  <PostCard key={post._id} post={post} />
+))
       )}
     </div>
   );

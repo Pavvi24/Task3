@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
+import { useState } from 'react';
+import CommentSection from './CommentSection';
 
 export default function PostCard({ post, variant = 'default' }) {
   const timeAgo = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
+  const [showComments, setShowComments] = useState(false);
 
   if (variant === 'featured') {
     return (
@@ -99,13 +102,26 @@ export default function PostCard({ post, variant = 'default' }) {
               <span className="text-ink-200">·</span>
               <span className="font-sans text-xs text-ink-400">{timeAgo}</span>
             </div>
-            <div className="flex items-center gap-3 text-ink-300">
-              <span className="font-sans text-xs">{post.likes?.length || 0} ♥</span>
-              <span className="font-sans text-xs">{post.commentCount || 0} 💬</span>
-            </div>
+           <div className="flex items-center gap-3 text-ink-300">
+  <span className="font-sans text-xs">
+    {post.likes?.length || 0} ♥
+  </span>
+
+  <button
+    onClick={() => setShowComments(!showComments)}
+    className="font-sans text-xs text-blue-600 hover:text-blue-800 transition"
+  >
+    {post.commentCount || 0} 💬 {showComments ? "▲" : "▼"}
+  </button>
+</div>
           </div>
         </div>
       </div>
+      {showComments && (
+  <div className="mt-6 border-t pt-4">
+    <CommentSection postId={post._id} />
+  </div>
+)}
     </article>
   );
 }
